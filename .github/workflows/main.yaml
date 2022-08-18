@@ -47,9 +47,8 @@ jobs:
         uses: imranismail/setup-kustomize@v1
       - name: Decrypt secret
         run: |-
-          curl -O -L -C - https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux.amd64
-          sudo mv sops-v3.7.3.linux.amd64 /usr/bin/sops
-          sudo chmod +x /usr/bin/sops
+          curl -O -L -C - https://github.com/mozilla/sops/releases/download/v3.7.3/sops-3.7.3-1.x86_64.rpm
+          rpm -i sops-3.7.3-1.x86_64.rpm
           SOPS_AGE_KEY=${{ secrets.GKE_DWK_SOPS_AGE_KEY }}
           sops --decrypt secret.enc.yaml --output secret.yaml
       - name: Deploy
