@@ -9,20 +9,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Decrypt secret
         run: |-
           curl -O -L -C - https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux
-          echo 1
           sudo mv sops-v3.7.3.linux /usr/bin/sops
-          echo 2
           sudo chmod +x /usr/bin/sops
-          echo 3
           SOPS_AGE_KEY=${{ secrets.GKE_DWK_SOPS_AGE_KEY }}
-          echo 4
-          ls
           sops --decrypt manifests/secret.enc.yaml --output manifests/secret.yaml
-          echo 5
 env:
   PROJECT_ID: ${{ secrets.GKE_DWK_PROJECT }}
   GKE_CLUSTER: dwk-cluster
