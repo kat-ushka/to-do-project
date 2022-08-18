@@ -87,7 +87,7 @@ It can be done manually using following steps:
 
 The following GitHub actions secrets should exist in repository to support pipeline:
 
-- GKE_DWK_PROJECT - the name of the Google Cloud project
+- GKE_DWK_PROJECT - the ID of the Google Cloud project  
 - GKE_SA_KEY - is a service account key that is required to access the Google Cloud services - read their guide for it [here](https://cloud.google.com/iam/docs/creating-managing-service-account-keys)
    > These roles are more than enough to do the deployment. Give them to the service account:
    > - Kubernetes Engine Service Agent
