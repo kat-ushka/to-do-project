@@ -91,6 +91,7 @@ The following GitHub actions secrets should exist in repository to support pipel
 - GKE_SA_KEY - is a service account key that is required to access the Google Cloud services - read their guide for it [here](https://cloud.google.com/iam/docs/creating-managing-service-account-keys)
    > These roles are more than enough to do the deployment. Give them to the service account:
    > - Kubernetes Engine Service Agent
+   > - Kubernetes Engine Cluster Viewer
    > - Storage Admin
 - GKE_DWK_SOPS_AGE_KEY - an age key. For more information check [this section](#Kubernetes).
 
