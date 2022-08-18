@@ -15,8 +15,9 @@ jobs:
           curl -O -L -C - https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux
           sudo mv sops-v3.7.3.linux /usr/bin/sops
           sudo chmod +x /usr/bin/sops
-          SOPS_AGE_KEY="${{ secrets.GKE_DWK_SOPS_AGE_KEY }}"
-          sops --decrypt secret.enc.yaml --output secret.yaml
+          SOPS_AGE_KEY=${{ secrets.GKE_DWK_SOPS_AGE_KEY }}
+          ls
+          sops --decrypt manifests/secret.enc.yaml --output manifests/secret.yaml
 env:
   PROJECT_ID: ${{ secrets.GKE_DWK_PROJECT }}
   GKE_CLUSTER: dwk-cluster
