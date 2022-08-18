@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - manifests/namespace.yaml
+  - manifests/secret.yaml
+  - manifests/persistentvolumeclaim.yaml
+  - manifests/service.yaml
+  - manifests/statefulset.yaml
+  - manifests/deployment.yaml
+  - manifests/ingress.yaml
+  - manifests/cronjob.yaml
+images:
+  - name: to-do-api
+    newName: gcr.io/PROJECT_ID/TODO_API_IMAGE
+    newTag: "1.2"
+  - name: to-do-web
+    newName: gcr.io/PROJECT_ID/TODO_WEB_IMAGE
+    newTag: "1.2"
+  - name: to-do-db
+    newName: gcr.io/PROJECT_ID/TODO_DB_IMAGE
+    newTag: "1.0"
+  - name: to-do-daily
+    newName: gcr.io/PROJECT_ID/TODO_DAILY_IMAGE
+    newTag: "1.0"
