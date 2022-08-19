@@ -115,7 +115,7 @@
     </dependencies>
 
     <build>
-        <finalName>to-do-api</finalName>
+        <finalName>ROOT</finalName>
     </build>
 
 </project>

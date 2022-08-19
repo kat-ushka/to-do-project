@@ -11,8 +11,13 @@
         </resource-env-ref-type>
     </resource-env-ref>
 
-    <welcome-file-list>
-        <welcome-file>index.xhtml</welcome-file>
-    </welcome-file-list>
+    <servlet>
+        <servlet-name>IndexServlet</servlet-name>
+        <jsp-file>/index.xhtml</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>IndexServlet</servlet-name>
+        <url-pattern>/todo</url-pattern>
+    </servlet-mapping>
 
 </web-app>

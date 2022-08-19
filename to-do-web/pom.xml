@@ -105,7 +105,7 @@
     </dependencies>
 
     <build>
-        <finalName>todo</finalName>
+        <finalName>ROOT</finalName>
     </build>
 
 </project>
