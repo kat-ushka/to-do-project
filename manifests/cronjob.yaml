@@ -13,7 +13,7 @@ spec:
         spec:
           containers:
             - name: daily
-              image: katushka/to-do-daily:1.0
+              image: to-do-daily
               imagePullPolicy: Always
               env:
                 - name: TODO_API_URL
