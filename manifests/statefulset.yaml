@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   namespace: to-do-project
-  name: postgresql
+  name: to-do-db
 spec:
   serviceName: db-svc
   replicas: 1
