@@ -11,14 +11,14 @@ resources:
   - manifests/cronjob.yaml
 images:
   - name: to-do-api
-    newName: gcr.io/PROJECT_ID/TODO_API_IMAGE
+    newName: gcr.io/$PROJECT_ID/$TODO_API_IMAGE
     newTag: "1.0"
   - name: to-do-web
-    newName: gcr.io/PROJECT_ID/TODO_WEB_IMAGE
+    newName: gcr.io/$PROJECT_ID/$TODO_WEB_IMAGE
     newTag: "1.0"
   - name: to-do-db
-    newName: gcr.io/PROJECT_ID/TODO_DB_IMAGE
+    newName: gcr.io/$PROJECT_ID/$TODO_DB_IMAGE
     newTag: "1.0"
   - name: to-do-daily
-    newName: gcr.io/PROJECT_ID/TODO_DAILY_IMAGE
+    newName: gcr.io/$PROJECT_ID/$TODO_DAILY_IMAGE
     newTag: "1.0"
