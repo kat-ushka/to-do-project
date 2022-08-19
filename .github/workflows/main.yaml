@@ -45,13 +45,15 @@ jobs:
           docker push "gcr.io/$PROJECT_ID/$TODO_DAILY_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v1
-      - name: Deploy
+      - name: Decrypt secret
         run: |-
           curl -O -L -C - https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux
           sudo mv sops-v3.7.3.linux /usr/bin/sops
           sudo chmod +x /usr/bin/sops
           export SOPS_AGE_KEY=${{ secrets.GKE_DWK_SOPS_AGE_KEY }}
-          sops --decrypt manifests/secret.enc.yaml --output manifests/secret.yaml
+          sops --decrypt manifests/secret.enc.yaml > manifests/secret.yaml
+      - name: Deploy
+        run: |-
           kustomize edit set image gcr.io/PROJECT_ID/TODO_API_IMAGE=gcr.io/$PROJECT_ID/$TODO_API_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
           kustomize edit set image gcr.io/PROJECT_ID/TODO_WEB_IMAGE=gcr.io/$PROJECT_ID/$TODO_WEB_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
           kustomize edit set image gcr.io/PROJECT_ID/TODO_DB_IMAGE=gcr.io/$PROJECT_ID/$TODO_DB_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
