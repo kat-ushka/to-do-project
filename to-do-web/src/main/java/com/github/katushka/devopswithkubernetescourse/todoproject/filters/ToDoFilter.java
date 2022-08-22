@@ -18,7 +18,7 @@ public class ToDoFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        httpResponse.sendRedirect(httpRequest.getContextPath() + "/todo/index.xhtml");
+        httpResponse.sendRedirect(httpRequest.getRequestURI() + "/index.xhtml");
     }
 
     @Override

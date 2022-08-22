@@ -57,6 +57,6 @@ public class ImageService {
 
     public String getWebLocation() throws IOException {
         File image = new File(getTodayImage());
-        return "/images/" + image.getName();
+        return "images/" + image.getName();
     }
 }

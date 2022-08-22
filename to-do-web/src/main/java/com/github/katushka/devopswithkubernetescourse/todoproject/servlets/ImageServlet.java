@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-@WebServlet("/images/*")
+@WebServlet("/todo/images/*")
 public class ImageServlet extends HttpServlet {
 
     @Inject
