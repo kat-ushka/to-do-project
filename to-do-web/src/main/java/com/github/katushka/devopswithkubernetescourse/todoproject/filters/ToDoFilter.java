@@ -1,4 +1,4 @@
-package com.github.katushka.devopswithkubernetescourse.todoproject.servlets;
+package com.github.katushka.devopswithkubernetescourse.todoproject.filters;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -18,7 +18,7 @@ public class ToDoFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        httpResponse.sendRedirect(httpRequest.getContextPath() + "/faces/index.xhtml");
+        httpResponse.sendRedirect(httpRequest.getContextPath() + "/todo/index.xhtml");
     }
 
     @Override
