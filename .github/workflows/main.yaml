@@ -66,7 +66,7 @@ jobs:
 env:
   PROJECT_ID: ${{ secrets.GKE_DWK_PROJECT }}
   GKE_CLUSTER: dwk-cluster
-  GKE_ZONE: europe-north1-b
+  GKE_ZONE: europe-north1-c
   TODO_API_IMAGE: to-do-api
   TODO_WEB_IMAGE: to-do-web
   TODO_DB_IMAGE: to-do-db
