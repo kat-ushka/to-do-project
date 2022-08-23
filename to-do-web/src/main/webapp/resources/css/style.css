@@ -7,8 +7,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 400px;
-    margin: 0 auto;
     padding: 20px;
 }
 
@@ -22,6 +20,11 @@ body {
     width: 400px;
 }
 
-.list {
-    text-align: left;
+.main div {
+    text-align: center;
+    padding: 20px;
+}
+
+.labels {
+    width: 200px;
 }

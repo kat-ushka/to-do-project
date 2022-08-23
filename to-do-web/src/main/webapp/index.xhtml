@@ -12,16 +12,19 @@
     <h:body>
         <div class="main">
             <h:form prependId="false">
+                <div>
+                    <h:outputLabel value="#{today.dateString}"/>
+                    <p/>
+                    <h:outputLabel value="#{today.weekString}"/>
+                </div>
                 <h:graphicImage url="#{imageService.webLocation}" styleClass="image"/>
-                <p/>
-                <h:outputLabel for="todo" value="Let's make some ToDo!"/>
-                <p/>
+                <div>
+                    <h:outputLabel for="todo" value="Let's make some ToDo!"/>
+                </div>
                 <h:inputTextarea id="todo" value="#{toDoText.text}" tabindex="0" styleClass="textarea">
                     <f:validator validatorId="toDoValidator" />
-                </h:inputTextarea>
-                <p/>
-                <h:message for="todo" style="color:navy"/>
-                <p/>
+                </h:inputTextarea><br/>
+                <h:message for="todo" style="color:navy"/><br/>
                 <h:commandButton value="Create ToDo" tabindex="1" action="#{toDoText.save()}"/>
                 <p/>
                 <ul class="list">

@@ -54,6 +54,9 @@ jobs:
           sops --decrypt manifests/secret.enc.yaml > manifests/secret.yaml
       - name: Deploy
         run: |-
+          kubectl create namespace ${GITHUB_REF#refs/heads/} || true
+          kubectl config set-context --current --namespace=${GITHUB_REF#refs/heads/}
+          kustomize edit set namespace ${GITHUB_REF#refs/heads/}
           kustomize edit set image to-do-api=gcr.io/$PROJECT_ID/$TODO_API_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
           kustomize edit set image to-do-web=gcr.io/$PROJECT_ID/$TODO_WEB_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
           kustomize edit set image to-do-db=gcr.io/$PROJECT_ID/$TODO_DB_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
