@@ -5,7 +5,10 @@
 * [Required tools](#required-tools)
 * [Preconfiguring Google Cloud](#preconfiguring-google-cloud)
 * [Dealing with secrets](#dealing-with-secrets)
-* [How to deploy manually](#how-to-deploy-manually)
+  * [Kubernetes](#kubernetes)
+  * [GitHub](#github)
+* [How to deploy to GCP manually](#how-to-deploy-to-gcp-manually)
+* [How to deploy locally for testing](#how-to-deploy-locally-for-testing)
 <!-- TOC -->
 
 ## Description
@@ -99,7 +102,7 @@ The following GitHub actions secrets should exist in repository to support pipel
 
 Assuming you have kubectl, age, sops, and Google Cloud SDK already installed and configured.
 
-If not check [this section](#Required tools) for the installation links and [this one](#Preconfiguring Google Cloud) for Google Cloud prerequisites.
+If not, check [this section](#Required-tools) for the installation links and [this one](#Preconfiguring-Google-Cloud) for Google Cloud prerequisites.
 
 1. Create a new kubernetes cluster:
     ```shell
@@ -113,7 +116,7 @@ If not check [this section](#Required tools) for the installation links and [thi
     ```shell
     kubectl apply -f manifests/0.namespace.yaml
     ```
-3. Create a postgres secret config (check this [section](#Dealing with secrets)):
+3. Create a postgres secret config (check this [section](#Dealing-with-secrets)):
     ```shell
     sops --decrypt manifests/2.secret.enc.yaml | kubectl apply -f -
     ``` 
@@ -125,7 +128,7 @@ If not check [this section](#Required tools) for the installation links and [thi
     ```shell
     kubectl get ing -n log-output
     ```
-6. Visit http://<to-do-web-ingress ip>:<to-do-web-ingress port>/todo to use service.
+6. Visit `http://<to-do-web-ingress ip>:<to-do-web-ingress port>/todo` to use service.
 7. Delete the cluster after using to avoid using up the credits:
      ```shell
      gcloud container clusters delete dwk-cluster --zone=europe-north1-b
@@ -157,4 +160,4 @@ Assuming you have Maven, Tomcat 10 and PostgreSQL (e.g. in Docker) already insta
    ```
 6. Perform [init.sql](database/init.sql) on your database
 7. Startup tomcat
-8. Visit http://localhost:<tomcat port>/todo to use service.
+8. Visit `http://localhost:<tomcat port>/todo` to use service.
