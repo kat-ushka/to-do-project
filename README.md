@@ -34,7 +34,7 @@ To successfully deploy this project one will need to install:
     ```shell
     gcloud services enable container.googleapis.com
     ```
-5. Create a new  kubernetes cluster:
+5. Create a new  kubernetes cluster (zone can differ, but remember to change GKE_ZONE variable in [main.yaml](.github/workflows/main.yaml) too):
     ```shell
     gcloud container clusters create dwk-cluster --zone=europe-north1-b --cluster-version=1.22
     ```
@@ -95,7 +95,7 @@ The following GitHub actions secrets should exist in repository to support pipel
    > - Storage Admin
 - GKE_DWK_SOPS_AGE_KEY - an age key. For more information check [this section](#Kubernetes).
 
-## How to deploy manually
+## How to deploy to GCP manually
 
 Assuming you have kubectl, age, sops, and Google Cloud SDK already installed and configured.
 
@@ -130,3 +130,31 @@ If not check [this section](#Required tools) for the installation links and [thi
      ```shell
      gcloud container clusters delete dwk-cluster --zone=europe-north1-b
      ```
+
+## How to deploy locally for testing
+
+Assuming you have Maven, Tomcat 10 and PostgreSQL (e.g. in Docker) already installed and configured.
+
+1. Open the shell and move to the project folder.
+2. Build up the project artifacts with:
+   ```shell
+   mvn clean install
+   ```
+3. Rename ROOT.war (e.g. to todo-api.war) and copy it from the to-do-api/target/ to your tomcat webapps folder.
+4. Copy ROOT.war from the to-do-web/target to your tomcat webapps folder.
+5. Set up next environment variables: 
+   ```properties
+   # For API
+   DB_HOST = # postgres database host
+   DB_PORT = # postgres database host
+   DB_NAME = # postgres database name
+   DB_USER = # postgres database user
+   DB_USER_PASSWORD = # postgres database password
+   
+   # For Web
+   TODO_API_URI = # url for accessing to-do-api/src/main/java/com/github/katushka/devopswithkubernetescourse/todobackend/resources/ToDoResource.java
+   UPLOAD_LOCATION = # filepath for saving image (including the filename)
+   ```
+6. Perform [init.sql](database/init.sql) on your database
+7. Startup tomcat
+8. Visit http://localhost:<tomcat port>/todo to use service.
