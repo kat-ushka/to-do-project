@@ -2,7 +2,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: to-do-project
   name: to-do-api
 spec:
   replicas: 1
@@ -46,7 +45,6 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: to-do-project
   name: to-do-web
 spec:
   replicas: 1

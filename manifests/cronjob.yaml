@@ -2,7 +2,6 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  namespace: to-do-project
   name: to-do-daily
 spec:
   schedule: "0 6 * * *" # daily at 6 A.M.

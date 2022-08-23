@@ -2,7 +2,6 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  namespace: to-do-project
   name: to-do-db
 spec:
   serviceName: db-svc
