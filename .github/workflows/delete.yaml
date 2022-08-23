@@ -18,7 +18,7 @@ jobs:
       - run: gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
       - name: Delete namespace
         run: |-
-          kubectl delete namespace ${GITHUB_REF#refs/heads/} || true
+          kubectl delete namespace ${{ github.event.ref }} || true
 
 env:
   GKE_CLUSTER: dwk-cluster
