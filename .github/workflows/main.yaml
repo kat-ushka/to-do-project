@@ -62,9 +62,9 @@ jobs:
           kustomize edit set image to-do-db=gcr.io/$PROJECT_ID/$TODO_DB_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
           kustomize edit set image to-do-daily=gcr.io/$PROJECT_ID/$TODO_DAILY_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
           kustomize build . | kubectl apply -f -
-          kubectl rollout status statefulset $TODO_DB_IMAGE -n to-do-project
-          kubectl rollout status deployment $TODO_API_IMAGE -n to-do-project
-          kubectl rollout status deployment $TODO_WEB_IMAGE -n to-do-project
+          kubectl rollout status statefulset $TODO_DB_IMAGE
+          kubectl rollout status deployment $TODO_API_IMAGE
+          kubectl rollout status deployment $TODO_WEB_IMAGE
           kubectl get services -o wide
 env:
   PROJECT_ID: ${{ secrets.GKE_DWK_PROJECT }}
