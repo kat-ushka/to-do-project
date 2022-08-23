@@ -76,28 +76,3 @@ jobs:
           kubectl rollout status deployment $TODO_WEB_IMAGE
           kubectl get services -o wide
 
----
-name: Delete application
-on:
-  delete:
-
-jobs:
-  delete-namespace:
-    name: Delete namespace
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
-        with:
-          project_id: ${{ secrets.GKE_DWK_PROJECT }}
-          service_account_key: ${{ secrets.GKE_SA_KEY }}
-          export_default_credentials: true
-      - run: gcloud --quiet auth configure-docker
-      - run: gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
-      - name: Delete namespace
-        run: |-
-          kubectl delete namespace ${GITHUB_REF#refs/heads/} || true
-
-env:
-  GKE_CLUSTER: dwk-cluster
-  GKE_ZONE: europe-north1-c
