@@ -64,6 +64,10 @@ spec:
         - image: to-do-web
           imagePullPolicy: Always
           name: to-do-web
+          resources:
+            limits:
+              cpu: "200m"
+              memory: "300Mi"
           volumeMounts:
             - name: shared-image
               mountPath: /usr/src/app/local_files/images
