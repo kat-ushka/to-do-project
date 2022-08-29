@@ -33,7 +33,7 @@ spec:
             - name: DB_HOST
               value: db-svc
             - name: DB_PORT
-              value: "5433"
+              value: "5432"
             - name: DB_USER_PASSWORD
               valueFrom:
                 secretKeyRef:
