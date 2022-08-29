@@ -62,6 +62,17 @@ public class ConnectionFactory {
         }
     }
 
+    public boolean isConnectionAvailable() {
+        try {
+            connect(action -> {});
+            return true;
+        } catch (Exception ex) {
+            logger.atError().withThrowable(ex)
+                    .log("Failed to establish connection to the database due to error: {}", ex.getMessage());
+            return false;
+        }
+    }
+
     /**
      * Kubernetes adds a `\n` character to the secret value,
      * so it needs to be cut off.
@@ -69,7 +80,7 @@ public class ConnectionFactory {
      */
     private static String getCleanedVariable(String envName) {
         final String pass = System.getenv(envName);
-        if (pass.endsWith("\n")) {
+        if (pass != null && pass.endsWith("\n")) {
             return pass.substring(0, pass.indexOf("\n"));
         }
         return pass;

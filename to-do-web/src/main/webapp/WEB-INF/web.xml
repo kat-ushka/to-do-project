@@ -10,14 +10,4 @@
             jakarta.enterprise.inject.spi.BeanManager
         </resource-env-ref-type>
     </resource-env-ref>
-
-    <servlet>
-        <servlet-name>faces</servlet-name>
-        <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>faces</servlet-name>
-        <url-pattern>/todo/*</url-pattern>
-    </servlet-mapping>
 </web-app>

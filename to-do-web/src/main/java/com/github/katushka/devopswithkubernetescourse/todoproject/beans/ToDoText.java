@@ -1,14 +1,14 @@
 package com.github.katushka.devopswithkubernetescourse.todoproject.beans;
 
 import com.github.katushka.devopswithkubernetescourse.todoproject.services.ToDoService;
-import jakarta.enterprise.context.SessionScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 import java.io.Serializable;
 
 @Named
-@SessionScoped
+@RequestScoped
 public class ToDoText implements Serializable {
 
     @Inject

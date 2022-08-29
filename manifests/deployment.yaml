@@ -17,11 +17,23 @@ spec:
         - image: to-do-api
           name: to-do-api
           imagePullPolicy: Always
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            httpGet:
+              path: /api/healthz
+              port: 8080
+          livenessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            httpGet:
+              path: /api/healthz
+              port: 8080
           env:
             - name: DB_HOST
               value: db-svc
             - name: DB_PORT
-              value: "5432"
+              value: "5433"
             - name: DB_USER_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -64,6 +76,18 @@ spec:
         - image: to-do-web
           imagePullPolicy: Always
           name: to-do-web
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            httpGet:
+              path: /todo/api/healthz
+              port: 8080
+          livenessProbe:
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            httpGet:
+              path: /todo/api/healthz
+              port: 8080
           resources:
             limits:
               cpu: "200m"

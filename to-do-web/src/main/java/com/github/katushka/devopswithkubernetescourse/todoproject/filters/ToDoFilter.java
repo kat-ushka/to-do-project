@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebFilter("/todo")
+@WebFilter("/")
 public class ToDoFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -15,7 +15,7 @@ public class ToDoFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         httpResponse.sendRedirect(httpRequest.getRequestURI() + "/index.xhtml");

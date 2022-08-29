@@ -31,26 +31,50 @@ public class ToDoService {
     }
 
     public List<ToDo> getToDoList() {
-        WebTarget target = getWebTarget();
-        try (Response response = target.request().get()) {
-            List<ToDo> todos = response.readEntity(List.class);
-            return todos.isEmpty() ? null : todos;
-        }
-    }
-
-    private WebTarget getWebTarget() {
-        Client client = ClientBuilder.newBuilder()
-                .connectTimeout(5, TimeUnit.SECONDS)
-                .readTimeout(5, TimeUnit.SECONDS)
-                .build();
-
-        return client.target(apiUri);
+        return performActionWithTarget(target -> {
+            try (Response response = target.request().get()) {
+                List<ToDo> todos = response.readEntity(List.class);
+                return todos.isEmpty() ? null : todos;
+            }
+        });
     }
 
     public void createToDo(String text) {
-        WebTarget target = getWebTarget();
-        try (Response response = target.request().post(Entity.entity(text, MediaType.APPLICATION_JSON))) {
-            response.readEntity(String.class);
+        performActionWithTarget(target -> {
+            try (Response response = target.request().post(Entity.entity(text, MediaType.APPLICATION_JSON))) {
+                return response.readEntity(String.class);
+            }
+        });
+    }
+
+    public boolean isAvailable() {
+        try {
+            return performActionWithTarget(target -> true);
+        } catch (Exception ex) {
+            logger.atError().withThrowable(ex).log("Failed to reach service {} due to exception: {}",
+                    apiUri, ex.getMessage());
+            return false;
         }
+    }
+
+    private Client getClient() {
+        return ClientBuilder.newBuilder()
+                .connectTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(5, TimeUnit.SECONDS)
+                .build();
+    }
+
+    private <T> T performActionWithTarget(TargetAction<T> action) {
+        Client client = getClient();
+        try {
+            WebTarget target = client.target(apiUri);
+            return action.perform(target);
+        } finally {
+            client.close();
+        }
+    }
+
+    private interface TargetAction<T> {
+        T perform(WebTarget target);
     }
 }
