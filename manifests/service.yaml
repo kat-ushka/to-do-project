@@ -39,7 +39,7 @@ spec:
     timeoutSec: 3
     type: HTTP
     requestPath: /todo/test.xhtml
-    port: 2345
+    port: 8080
 
 ---
 apiVersion: v1

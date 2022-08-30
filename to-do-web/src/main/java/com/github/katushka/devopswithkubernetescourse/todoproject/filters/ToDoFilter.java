@@ -18,7 +18,11 @@ public class ToDoFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        httpResponse.sendRedirect(httpRequest.getRequestURI() + "/index.xhtml");
+        String requestURI = httpRequest.getRequestURI();
+        if (!requestURI.endsWith("/")) {
+            requestURI += "/";
+        }
+        httpResponse.sendRedirect(requestURI + "index.xhtml");
     }
 
     @Override
