@@ -80,13 +80,13 @@ spec:
             initialDelaySeconds: 90
             periodSeconds: 20
             httpGet:
-              path: /api/healthz
+              path: /todo/api/healthz
               port: 8080
           livenessProbe:
             initialDelaySeconds: 90
             periodSeconds: 20
             httpGet:
-              path: /test.xhtml
+              path: /todo/test.xhtml
               port: 8080
           resources:
             limits:
@@ -100,3 +100,5 @@ spec:
               value: "/usr/src/app/local_files/images/to-do-today.jpg"
             - name: TODO_API_URI
               value: "http://to-do-api-svc:2345/api/todos"
+            - name: TODO_API_HEALTH_URI
+              value: "http://to-do-api-svc:2345/api/healthz/ready"

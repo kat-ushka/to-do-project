@@ -23,15 +23,18 @@ public class ToDoService {
     private final Logger logger = LogManager.getLogger(getClass());
 
     private final String apiUri;
+    private final String healthUri;
 
     public ToDoService() {
         apiUri = Optional.ofNullable(System.getenv("TODO_API_URI"))
                 .orElse("http://localhost:8090/api/todos");
+        healthUri = Optional.ofNullable(System.getenv("TODO_API_HEALTH_URI"))
+                .orElse("http://localhost:8090/api/healthz");
         logger.atDebug().log("ToDo API url is {}", apiUri);
     }
 
     public List<ToDo> getToDoList() {
-        return performActionWithTarget(target -> {
+        return performActionWithTarget(apiUri, target -> {
             try (Response response = target.request().get()) {
                 List<ToDo> todos = response.readEntity(List.class);
                 return todos.isEmpty() ? null : todos;
@@ -40,7 +43,7 @@ public class ToDoService {
     }
 
     public void createToDo(String text) {
-        performActionWithTarget(target -> {
+        performActionWithTarget(apiUri, target -> {
             try (Response response = target.request().post(Entity.entity(text, MediaType.APPLICATION_JSON))) {
                 return response.readEntity(String.class);
             }
@@ -49,7 +52,11 @@ public class ToDoService {
 
     public boolean isAvailable() {
         try {
-            return performActionWithTarget(target -> true);
+            return performActionWithTarget(healthUri, target -> {
+                try (Response response = target.request().get()) {
+                    return response.getStatus() >= 200 && response.getStatus() < 400;
+                }
+            });
         } catch (Exception ex) {
             logger.atError().withThrowable(ex).log("Failed to reach service {} due to exception: {}",
                     apiUri, ex.getMessage());
@@ -64,10 +71,10 @@ public class ToDoService {
                 .build();
     }
 
-    private <T> T performActionWithTarget(TargetAction<T> action) {
+    private <T> T performActionWithTarget(String uri, TargetAction<T> action) {
         Client client = getClient();
         try {
-            WebTarget target = client.target(apiUri);
+            WebTarget target = client.target(uri);
             return action.perform(target);
         } finally {
             client.close();
