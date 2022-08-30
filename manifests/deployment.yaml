@@ -76,6 +76,18 @@ spec:
         - image: to-do-web
           imagePullPolicy: Always
           name: to-do-web
+          readinessProbe:
+            initialDelaySeconds: 90
+            periodSeconds: 20
+            httpGet:
+              path: /api/healthz
+              port: 8080
+          livenessProbe:
+            initialDelaySeconds: 90
+            periodSeconds: 20
+            httpGet:
+              path: /test.xhtml
+              port: 8080
           resources:
             limits:
               cpu: "200m"
