@@ -27,7 +27,7 @@ public class ConnectionFactory {
         final String dbUser = getCleanedVariable("DB_USER");
         final String dbUserPassword = getCleanedVariable("DB_USER_PASSWORD");
 
-        final String dbUrl = MessageFormat.format("jdbc:postgresql://:{1}/{2}", dbHost, dbPort, dbName);
+        final String dbUrl = MessageFormat.format("jdbc:postgresql://{0}:{1}/{2}", dbHost, dbPort, dbName);
 
         if (noneIsBlank(dbHost, dbPort, dbName, dbUser, dbUserPassword)) {
             logger.atDebug().log("""
