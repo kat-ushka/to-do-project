@@ -31,7 +31,7 @@ To successfully deploy this project one will need to install:
 2. Install Google CLoud SDK (instruction is [here](https://cloud.google.com/sdk/docs/install))
 3. After completing the initialization set the previously created project to be used:
     ```shell
-    gcloud config set project dwk-gke
+    gcloud config set project <PROJECT_ID>
     ```
 4. Enable the container.googleapis.com service:
     ```shell
@@ -39,7 +39,7 @@ To successfully deploy this project one will need to install:
     ```
 5. Create a new  kubernetes cluster (zone can differ, but remember to change GKE_ZONE variable in [main.yaml](.github/workflows/main.yaml) too):
     ```shell
-    gcloud container clusters create dwk-cluster --zone=europe-north1-b --cluster-version=1.22
+    gcloud container clusters create dwk-cluster --zone=europe-north1-b --cluster-version=1.24
     ```
 
 ## Dealing with secrets
