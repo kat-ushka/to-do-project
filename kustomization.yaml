@@ -5,7 +5,7 @@ resources:
   - manifests/persistentvolumeclaim.yaml
   - manifests/service.yaml
   - manifests/statefulset.yaml
-  - manifests/deployment.yaml
+  - manifests/rollout.yaml
   - manifests/ingress.yaml
   - manifests/cronjob.yaml
 images:
