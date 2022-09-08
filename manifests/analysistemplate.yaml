@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: cpu-rate
+  namespace: NAMESPACE
+spec:
+  metrics:
+    - name: restart-rate
+      initialDelay: 2m
+      successCondition: result < 0.1
+      provider:
+        prometheus:
+          address: http://kube-prometheus-stack-1602-prometheus.prometheus.svc.cluster.local:9090
+          query: |
+            namespace_cpu:kube_pod_container_resource_limits:sum{namespace="NAMESPACE"} offset 2m
