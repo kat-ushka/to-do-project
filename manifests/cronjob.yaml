@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: to-do-daily
+  name: to-do-daily-job
 spec:
   schedule: "0 6 * * *" # daily at 6 A.M.
   jobTemplate:

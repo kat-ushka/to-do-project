@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: to-do-api
+  name: to-do-api-dep
 spec:
   replicas: 1
   selector:
@@ -62,7 +62,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: to-do-web
+      app: to-do-web-dep
   template:
     metadata:
       labels:

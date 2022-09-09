@@ -72,8 +72,8 @@ jobs:
           kustomize edit set image to-do-daily=gcr.io/$PROJECT_ID/$TODO_DAILY_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA
           sed -e "s|NAMESPACE|$GITHUB_REF_NAME|g" manifests/analysistemplate.yaml | kubectl apply -f -
           kustomize build . | kubectl apply -f -
-          kubectl rollout status statefulset $TODO_DB_IMAGE
-          kubectl rollout status deployment $TODO_API_IMAGE
-          kubectl rollout status deployment $TODO_WEB_IMAGE --timeout=5m
+          kubectl rollout status statefulset to-do-db-statefulset
+          kubectl rollout status deployment to-do-api-dep
+          kubectl rollout status deployment to-do-web-dep --timeout=5m
           kubectl get services -o wide
 
