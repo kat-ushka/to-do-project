@@ -64,7 +64,7 @@ jobs:
       - name: Deploy
         run: |-
           kubectl create namespace $GITHUB_REF_NAME || true
-          kubectl config set-context --current --namespace=$NGITHUB_REF_NAME
+          kubectl config set-context --current --namespace=$GITHUB_REF_NAME
           kustomize edit set namespace $GITHUB_REF_NAME
           kustomize edit set image to-do-api=gcr.io/$PROJECT_ID/$TODO_API_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA
           kustomize edit set image to-do-web=gcr.io/$PROJECT_ID/$TODO_WEB_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA
