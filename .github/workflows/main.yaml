@@ -2,7 +2,6 @@ name: Release application
 
 env:
   PROJECT_ID: ${{ secrets.GKE_DWK_PROJECT }}
-  NAMESPACE: ${GITHUB_REF#refs/heads/}
   GKE_CLUSTER: dwk-cluster
   GKE_ZONE: europe-north1-b
   TODO_API_IMAGE: to-do-api
@@ -33,26 +32,26 @@ jobs:
         run: |-
           docker build \
             --file Dockerfile.api \
-            --tag "gcr.io/$PROJECT_ID/$TODO_API_IMAGE:$NAMESPACE-$GITHUB_SHA" \
+            --tag "gcr.io/$PROJECT_ID/$TODO_API_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA" \
             .
           docker build \
             --file Dockerfile.web \
-            --tag "gcr.io/$PROJECT_ID/$TODO_WEB_IMAGE:$NAMESPACE-$GITHUB_SHA" \
+            --tag "gcr.io/$PROJECT_ID/$TODO_WEB_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA" \
             .
           docker build \
             --file Dockerfile.db \
-            --tag "gcr.io/$PROJECT_ID/$TODO_DB_IMAGE:$NAMESPACE-$GITHUB_SHA" \
+            --tag "gcr.io/$PROJECT_ID/$TODO_DB_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA" \
             .
           docker build \
             --file Dockerfile.daily \
-            --tag "gcr.io/$PROJECT_ID/$TODO_DAILY_IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
+            --tag "gcr.io/$PROJECT_ID/$TODO_DAILY_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA" \
             .
       - name: Publish
         run: |-
-          docker push "gcr.io/$PROJECT_ID/$TODO_API_IMAGE:$NAMESPACE-$GITHUB_SHA"
-          docker push "gcr.io/$PROJECT_ID/$TODO_WEB_IMAGE:$NAMESPACE-$GITHUB_SHA"
-          docker push "gcr.io/$PROJECT_ID/$TODO_DB_IMAGE:$NAMESPACE-$GITHUB_SHA"
-          docker push "gcr.io/$PROJECT_ID/$TODO_DAILY_IMAGE:$NAMESPACE-$GITHUB_SHA"
+          docker push "gcr.io/$PROJECT_ID/$TODO_API_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA"
+          docker push "gcr.io/$PROJECT_ID/$TODO_WEB_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA"
+          docker push "gcr.io/$PROJECT_ID/$TODO_DB_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA"
+          docker push "gcr.io/$PROJECT_ID/$TODO_DAILY_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA"
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v1
       - name: Decrypt secret
@@ -64,14 +63,14 @@ jobs:
           sops --decrypt manifests/secret.enc.yaml > manifests/secret.yaml
       - name: Deploy
         run: |-
-          kubectl create namespace $NAMESPACE || true
-          kubectl config set-context --current --namespace=$NAMESPACE
-          kustomize edit set namespace $NAMESPACE
-          kustomize edit set image to-do-api=gcr.io/$PROJECT_ID/$TODO_API_IMAGE:$NAMESPACE-$GITHUB_SHA
-          kustomize edit set image to-do-web=gcr.io/$PROJECT_ID/$TODO_WEB_IMAGE:$NAMESPACE-$GITHUB_SHA
-          kustomize edit set image to-do-db=gcr.io/$PROJECT_ID/$TODO_DB_IMAGE:$NAMESPACE-$GITHUB_SHA
-          kustomize edit set image to-do-daily=gcr.io/$PROJECT_ID/$TODO_DAILY_IMAGE:$NAMESPACE-$GITHUB_SHA
-          sed -e 's|NAMESPACE|$NAMESPACE|g' manifests/analysistemplate.yaml | kubectl apply -f -
+          kubectl create namespace $GITHUB_REF_NAME || true
+          kubectl config set-context --current --namespace=$NGITHUB_REF_NAME
+          kustomize edit set namespace $GITHUB_REF_NAME
+          kustomize edit set image to-do-api=gcr.io/$PROJECT_ID/$TODO_API_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA
+          kustomize edit set image to-do-web=gcr.io/$PROJECT_ID/$TODO_WEB_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA
+          kustomize edit set image to-do-db=gcr.io/$PROJECT_ID/$TODO_DB_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA
+          kustomize edit set image to-do-daily=gcr.io/$PROJECT_ID/$TODO_DAILY_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA
+          sed -e 's|NAMESPACE|$GITHUB_REF_NAME|g' manifests/analysistemplate.yaml | kubectl apply -f -
           kustomize build . | kubectl apply -f -
           kubectl rollout status statefulset $TODO_DB_IMAGE
           kubectl rollout status deployment $TODO_API_IMAGE
