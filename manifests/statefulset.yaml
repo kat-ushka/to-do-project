@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: to-do-db
+  name: to-do-db-statefulset
 spec:
   serviceName: db-svc
   replicas: 1
