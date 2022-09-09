@@ -4,7 +4,7 @@ kind: Rollout
 metadata:
   name: to-do-api-dep
 spec:
-  replicas: 22
+  replicas: 2
   selector:
     matchLabels:
       app: to-do-api
