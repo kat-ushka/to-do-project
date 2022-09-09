@@ -4,10 +4,6 @@ env:
   PROJECT_ID: ${{ secrets.GKE_DWK_PROJECT }}
   GKE_CLUSTER: dwk-cluster
   GKE_ZONE: europe-north1-b
-  TODO_API_IMAGE: to-do-api
-  TODO_WEB_IMAGE: to-do-web
-  TODO_DB_IMAGE: to-do-db
-  TODO_DAILY_IMAGE: to-do-daily
 
 on:
   push:
@@ -32,28 +28,26 @@ jobs:
         run: |-
           docker build \
             --file Dockerfile.api \
-            --tag "gcr.io/$PROJECT_ID/$TODO_API_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA" \
+            --tag "gcr.io/$PROJECT_ID/to-do-api:$GITHUB_REF_NAME-$GITHUB_SHA" \
             .
           docker build \
             --file Dockerfile.web \
-            --tag "gcr.io/$PROJECT_ID/$TODO_WEB_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA" \
+            --tag "gcr.io/$PROJECT_ID/to-do-web:$GITHUB_REF_NAME-$GITHUB_SHA" \
             .
           docker build \
             --file Dockerfile.db \
-            --tag "gcr.io/$PROJECT_ID/$TODO_DB_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA" \
+            --tag "gcr.io/$PROJECT_ID/to-do-db:$GITHUB_REF_NAME-$GITHUB_SHA" \
             .
           docker build \
             --file Dockerfile.daily \
-            --tag "gcr.io/$PROJECT_ID/$TODO_DAILY_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA" \
+            --tag "gcr.io/$PROJECT_ID/to-do-daily:$GITHUB_REF_NAME-$GITHUB_SHA" \
             .
       - name: Publish
         run: |-
-          docker push "gcr.io/$PROJECT_ID/$TODO_API_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA"
-          docker push "gcr.io/$PROJECT_ID/$TODO_WEB_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA"
-          docker push "gcr.io/$PROJECT_ID/$TODO_DB_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA"
-          docker push "gcr.io/$PROJECT_ID/$TODO_DAILY_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA"
-      - name: Set up Kustomize
-        uses: imranismail/setup-kustomize@v1
+          docker push "gcr.io/$PROJECT_ID/to-do-api:$GITHUB_REF_NAME-$GITHUB_SHA"
+          docker push "gcr.io/$PROJECT_ID/to-do-web:$GITHUB_REF_NAME-$GITHUB_SHA"
+          docker push "gcr.io/$PROJECT_ID/to-do-db:$GITHUB_REF_NAME-$GITHUB_SHA"
+          docker push "gcr.io/$PROJECT_ID/to-do-daily:$GITHUB_REF_NAME-$GITHUB_SHA"
       - name: Decrypt secret
         run: |-
           curl -O -L -C - https://github.com/mozilla/sops/releases/download/v3.7.3/sops-v3.7.3.linux
@@ -61,15 +55,17 @@ jobs:
           sudo chmod +x /usr/bin/sops
           export SOPS_AGE_KEY=${{ secrets.GKE_DWK_SOPS_AGE_KEY }}
           sops --decrypt manifests/secret.enc.yaml > manifests/secret.yaml
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v1
       - name: Deploy
         run: |-
           kubectl create namespace $GITHUB_REF_NAME || true
           kubectl config set-context --current --namespace=$GITHUB_REF_NAME
           kustomize edit set namespace ${GITHUB_REF_NAME}
-          kustomize edit set image to-do-api=gcr.io/$PROJECT_ID/$TODO_API_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA
-          kustomize edit set image to-do-web=gcr.io/$PROJECT_ID/$TODO_WEB_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA
-          kustomize edit set image to-do-db=gcr.io/$PROJECT_ID/$TODO_DB_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA
-          kustomize edit set image to-do-daily=gcr.io/$PROJECT_ID/$TODO_DAILY_IMAGE:$GITHUB_REF_NAME-$GITHUB_SHA
+          kustomize edit set image to-do-api=gcr.io/$PROJECT_ID/to-do-api:$GITHUB_REF_NAME-$GITHUB_SHA
+          kustomize edit set image to-do-web=gcr.io/$PROJECT_ID/to-do-web:$GITHUB_REF_NAME-$GITHUB_SHA
+          kustomize edit set image to-do-db=gcr.io/$PROJECT_ID/to-do-db:$GITHUB_REF_NAME-$GITHUB_SHA
+          kustomize edit set image to-do-daily=gcr.io/$PROJECT_ID/to-do-daily:$GITHUB_REF_NAME-$GITHUB_SHA
           sed -e "s|NAMESPACE|$GITHUB_REF_NAME|g" manifests/analysistemplate.yaml | kubectl apply -f -
           kustomize build . | kubectl apply -f -
           kubectl rollout status statefulset to-do-db-statefulset
