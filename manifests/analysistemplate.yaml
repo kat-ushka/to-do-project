@@ -5,9 +5,9 @@ metadata:
   namespace: NAMESPACE
 spec:
   metrics:
-    - name: restart-rate
+    - name: cpu-rate
       initialDelay: 10m
-      successCondition: result < 0.1
+      successCondition: result < 0.6
       provider:
         prometheus:
           address: http://kube-prometheus-stack-1662-prometheus.prometheus.svc.cluster.local:9090
