@@ -78,8 +78,8 @@ jobs:
           kubectl rollout status statefulset to-do-db-statefulset
           echo "kubectl-argo-rollouts status to-do-api-dep"
           kubectl-argo-rollouts status to-do-api-dep
-          echo "kubectl-argo-rollouts status to-do-web-dep"
-          kubectl-argo-rollouts status to-do-web-dep
+          echo "kubectl-argo-rollouts status to-do-web-dep --timeout 20m"
+          kubectl-argo-rollouts status to-do-web-dep --timeout 20m
           echo "kubectl get services -o wide"
           kubectl get services -o wide
 
