@@ -72,9 +72,14 @@ jobs:
           kustomize edit set image to-do-db=gcr.io/$PROJECT_ID/to-do-db:$GITHUB_REF_NAME-$GITHUB_SHA
           kustomize edit set image to-do-daily=gcr.io/$PROJECT_ID/to-do-daily:$GITHUB_REF_NAME-$GITHUB_SHA
           sed -e "s|NAMESPACE|$GITHUB_REF_NAME|g" manifests/analysistemplate.yaml | kubectl apply -f -
+          echo "kustomize build . | kubectl apply -f -"
           kustomize build . | kubectl apply -f -
+          echo "kubectl rollout status statefulset to-do-db-statefulset"
           kubectl rollout status statefulset to-do-db-statefulset
+          echo "kubectl-argo-rollouts status to-do-api-dep"
           kubectl-argo-rollouts status to-do-api-dep
+          echo "kubectl-argo-rollouts status deployment to-do-web-dep"
           kubectl-argo-rollouts status deployment to-do-web-dep
+          echo "kubectl get services -o wide"
           kubectl get services -o wide
 
