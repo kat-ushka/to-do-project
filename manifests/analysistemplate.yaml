@@ -7,7 +7,7 @@ spec:
   metrics:
     - name: cpu-rate
       initialDelay: 10m
-      successCondition: result[0] < 0.7
+      successCondition: result[0] < 0.85
       provider:
         prometheus:
           address: http://kube-prometheus-stack-1662-prometheus.prometheus.svc.cluster.local:9090
