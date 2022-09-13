@@ -74,7 +74,7 @@ jobs:
           sed -e "s|NAMESPACE|$GITHUB_REF_NAME|g" manifests/analysistemplate.yaml | kubectl apply -f -
           kustomize build . | kubectl apply -f -
           kubectl rollout status statefulset to-do-db-statefulset
-          kubectl argo rollouts status to-do-api-dep
-          kubectl argo rollouts status deployment to-do-web-dep
+          kubectl-argo-rollouts status to-do-api-dep
+          kubectl-argo-rollouts status deployment to-do-web-dep
           kubectl get services -o wide
 
