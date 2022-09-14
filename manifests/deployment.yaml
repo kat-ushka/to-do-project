@@ -70,8 +70,7 @@ spec:
     spec:
       volumes:
         - name: shared-image
-          persistentVolumeClaim:
-            claimName: image-claim
+          emptyDir: {}
       containers:
         - image: to-do-web
           imagePullPolicy: Always
