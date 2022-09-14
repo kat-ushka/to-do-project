@@ -3,7 +3,7 @@ BEGIN;
 CREATE TABLE todos (
     id serial       PRIMARY KEY,
     text            VARCHAR(140),
-    is_completed    BOOLEAN DEFAULT FALSE
+    is_done    BOOLEAN DEFAULT FALSE
                    );
 
 COMMIT;

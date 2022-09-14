@@ -14,3 +14,10 @@ spec:
                 name: to-do-web-svc
                 port:
                   name: http
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: to-do-api-svc
+                port:
+                  name: http
