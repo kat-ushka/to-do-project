@@ -75,7 +75,13 @@ public class ToDos {
 
                         try (PreparedStatement statement = connection.prepareStatement(createSql)) {
                                 statement.setString(1, text);
-                                return statement.executeUpdate();
+                                if (statement.execute()) {
+                                        ResultSet result = statement.getResultSet();
+                                        if (result.next()) {
+                                                return result.getInt(1);
+                                        }
+                                }
+                                throw new SQLException("No new ToDo was created!");
                         }
                 });
         }
