@@ -1,5 +1,6 @@
 package com.github.katushka.devopswithkubernetescourse.todobackend.resources;
 
+import com.github.katushka.devopswithkubernetescourse.todoapi.beans.ToDo;
 import com.github.katushka.devopswithkubernetescourse.todobackend.database.ToDos;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -43,11 +44,12 @@ public class ToDoResource {
         
         @POST
         @Consumes (MediaType.APPLICATION_JSON)
-        public Response createToDo (@QueryParam ("toDoText") String toDoText) {
+        @Produces(MediaType.TEXT_PLAIN)
+        public Response createToDo (ToDo todo) {
                 try {
-                        int id = toDoList.createToDo(toDoText);
-                        logger.atDebug().log("A new todo {} was created\n\t{}", id, toDoText);
-                        return Response.ok().entity(id).build();
+                        todo.setId(toDoList.createToDo(todo.getText()));
+                        logger.atDebug().log("A new todo {} was created\n\t{}", todo.getId(), todo.getText());
+                        return Response.ok().entity(todo.getId()).build();
                 } catch (Exception e) {
                         logger.atError().withThrowable(e).log("Failed to create ToDo due to an exception: {}", e.getMessage());
                         return Response.serverError().entity(e).build();

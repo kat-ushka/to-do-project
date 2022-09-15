@@ -63,7 +63,7 @@ public class ToDos {
          * @throws SQLException
          */
         public int createToDo (String text) throws SQLException {
-                if (text.isBlank()) {
+                if (text == null || text.isBlank()) {
                         throw new IllegalArgumentException("Can not create empty TODO!");
                 }
                 if (text.length() > 140) {
