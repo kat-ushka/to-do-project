@@ -43,7 +43,7 @@ public class ToDoResource {
         
         @POST
         @Consumes (MediaType.APPLICATION_JSON)
-        public Response createToDo (String toDoText) {
+        public Response createToDo (@QueryParam ("toDoText") String toDoText) {
                 try {
                         int id = toDoList.createToDo(toDoText);
                         logger.atDebug().log("A new todo {} was created\n\t{}", id, toDoText);
