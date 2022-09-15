@@ -21,10 +21,12 @@ public class ToDoResource {
         
         @PUT
         @Path ("{id}")
-        public Response updateToDo (@PathParam ("id") int id, @QueryParam ("isDone") boolean isDone) {
+        @Consumes (MediaType.APPLICATION_JSON)
+        @Produces(MediaType.TEXT_PLAIN)
+        public Response updateToDo (@PathParam ("id") int id, ToDo todo) {
                 try {
-                        toDoList.updateToDo(id, isDone);
-                        logger.atDebug().log("A todo {} was updated with isDone {}", id, isDone);
+                        toDoList.updateToDo(id, todo.isDone());
+                        logger.atDebug().log("A todo {} was updated with isDone {}", id, todo.isDone());
                         return Response.ok().build();
                 } catch (SQLException e) {
                         logger.atError().withThrowable(e).log("Failed to update ToDo due to an exception: {}", e.getMessage());
